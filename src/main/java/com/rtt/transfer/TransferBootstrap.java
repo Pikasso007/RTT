@@ -6,10 +6,14 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public class TransferBootstrap {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TransferBootstrap.class);
 
     private static final int TOMCAT_PORT = 8080;
     private static final String JERSEY_SERVLET_NAME = "jersey-servlet";
@@ -19,6 +23,8 @@ public class TransferBootstrap {
     }
 
     private static void startEmbeddedServer() throws LifecycleException {
+        LOG.info("Starting embedded server");
+
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(TOMCAT_PORT);
 
