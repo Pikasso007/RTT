@@ -1,6 +1,6 @@
 package com.rtt.transfer;
 
-import com.rtt.transfer.configuration.ResourceLoader;
+import com.rtt.transfer.configuration.RestResourcesConfig;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -19,6 +19,7 @@ public class TransferBootstrap {
     private static final String JERSEY_SERVLET_NAME = "jersey-servlet";
 
     public static void main(String[] args) throws Exception {
+        ServicesManager.initServices();
         startEmbeddedServer();
     }
 
@@ -38,7 +39,7 @@ public class TransferBootstrap {
     }
 
     private static ServletContainer resourceConfig() {
-        return new ServletContainer(new ResourceConfig(new ResourceLoader().getClasses()));
+        return new ServletContainer(new ResourceConfig(new RestResourcesConfig().getClasses()));
     }
 
 }
