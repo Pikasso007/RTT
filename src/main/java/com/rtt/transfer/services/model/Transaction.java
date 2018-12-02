@@ -1,7 +1,10 @@
-package com.rtt.transfer.model;
+package com.rtt.transfer.services.model;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 public class Transaction {
@@ -9,6 +12,9 @@ public class Transaction {
     @Id
     @GeneratedValue
     private Long id;
+
+    @CreationTimestamp
+    private Date creationDate;
 
     private String accountIdFrom;
 
@@ -18,6 +24,9 @@ public class Transaction {
 
     private String comment;
 
+
+    public Transaction() {
+    }
 
     public Transaction(String accountIdFrom, String accountIdTo, BigDecimal amount, String comment) {
         this.accountIdFrom = accountIdFrom;
@@ -56,5 +65,21 @@ public class Transaction {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 }
