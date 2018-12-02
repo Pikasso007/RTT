@@ -1,38 +1,15 @@
-package com.rtt.transfer.services;
+package com.rtt.transfer.services.services;
 
-import com.rtt.transfer.ServicesManager;
-import com.rtt.transfer.model.Account;
-import com.rtt.transfer.model.Transaction;
+import com.rtt.transfer.services.model.Account;
+import com.rtt.transfer.services.model.Transaction;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.concurrent.locks.Lock;
 
-public class MoneyServiceSimple implements MoneyService {
-
-    public String createAccount() {
-        Account account = new Account();
-        account.setAmount(new BigDecimal(0));
-
-        EntityManager entityManager = ServicesManager.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.persist(account);
-        entityManager.getTransaction().commit();
-        entityManager.close();
-
-        return account.getId().toString();
-    }
-
-    public Account getAccount(String id) {
-        Account account = new Account();
-        account.setAmount(new BigDecimal(0));
-
-        EntityManager entityManager = ServicesManager.createEntityManager();
-        return entityManager.find(Account.class, Long.parseLong(id));
-    }
+public class TransactionsServiceSimple implements TransactionsService {
 
     public String transfer(String accountIdFrom, String accountIdTo, BigDecimal amount, String comment)  {
         if (Objects.equals(accountIdFrom, accountIdTo)) {

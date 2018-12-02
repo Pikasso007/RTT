@@ -1,6 +1,6 @@
-package com.rtt.transfer;
+package com.rtt.transfer.services;
 
-import com.rtt.transfer.configuration.RestResourcesConfig;
+import com.rtt.transfer.services.configuration.RestResourcesConfig;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -15,18 +15,24 @@ public class TransferBootstrap {
 
     private static final Logger LOG = LoggerFactory.getLogger(TransferBootstrap.class);
 
-    private static final int TOMCAT_PORT = 8080;
     private static final String JERSEY_SERVLET_NAME = "jersey-servlet";
+    private static final String MAIN_PERSISTENCE_UNIT_NAME = "rtt";
+
+    public static final int TOMCAT_PORT = 8080;
+
+    private static Tomcat tomcat;
 
     public static void main(String[] args) throws Exception {
-        ServicesManager.initServices();
+        ServicesManager.initServices(MAIN_PERSISTENCE_UNIT_NAME);
+
         startEmbeddedServer();
+        tomcat.getServer().await();
     }
 
-    private static void startEmbeddedServer() throws LifecycleException {
+    public static void startEmbeddedServer() throws LifecycleException {
         LOG.info("Starting embedded server");
 
-        Tomcat tomcat = new Tomcat();
+        tomcat = new Tomcat();
         tomcat.setPort(TOMCAT_PORT);
 
         Context context = tomcat.addContext("/", new File(".").getAbsolutePath());
@@ -35,7 +41,11 @@ public class TransferBootstrap {
         context.addServletMapping("/rest/*", JERSEY_SERVLET_NAME);
 
         tomcat.start();
-        tomcat.getServer().await();
+    }
+
+    public static void stopEmbeddedServer() throws LifecycleException {
+        LOG.info("Stopping embedded server");
+        tomcat.stop();
     }
 
     private static ServletContainer resourceConfig() {
