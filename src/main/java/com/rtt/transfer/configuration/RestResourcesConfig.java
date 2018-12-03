@@ -1,7 +1,7 @@
-package com.rtt.transfer.services.configuration;
+package com.rtt.transfer.configuration;
 
-import com.rtt.transfer.services.services.AccountsRestService;
-import com.rtt.transfer.services.services.TransactionsRestService;
+import com.rtt.transfer.services.AccountsRestService;
+import com.rtt.transfer.services.TransactionsRestService;
 
 import java.util.HashSet;
 import java.util.Set;

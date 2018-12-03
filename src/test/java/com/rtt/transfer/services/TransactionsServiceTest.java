@@ -1,9 +1,13 @@
 package com.rtt.transfer.services;
 
-import com.rtt.transfer.services.model.Account;
-import com.rtt.transfer.services.model.Transaction;
+import com.rtt.transfer.ServicesManager;
+import com.rtt.transfer.TransferBootstrap;
+import com.rtt.transfer.services.TransactionsServiceSimple;
+import com.rtt.transfer.model.Account;
+import com.rtt.transfer.model.Transaction;
 import org.glassfish.jersey.internal.util.collection.MultivaluedStringMap;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,7 +19,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
-import static com.rtt.transfer.services.services.TransactionsServiceSimple.NOT_INVOKED_TRANSACTION_ID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -70,9 +73,9 @@ public class TransactionsServiceTest {
                 .post(Entity.form(requestParams))
                 .readEntity(String.class);
 
-        assertEquals(NOT_INVOKED_TRANSACTION_ID, createdTransactionIdAfterDeposit);
-        assertEquals(NOT_INVOKED_TRANSACTION_ID, createdTransactionIdAfterWithdraw);
-        assertEquals(NOT_INVOKED_TRANSACTION_ID, createdTransactionIdAfterMoneyTransfer);
+        Assert.assertEquals(TransactionsServiceSimple.NOT_INVOKED_TRANSACTION_ID, createdTransactionIdAfterDeposit);
+        Assert.assertEquals(TransactionsServiceSimple.NOT_INVOKED_TRANSACTION_ID, createdTransactionIdAfterWithdraw);
+        Assert.assertEquals(TransactionsServiceSimple.NOT_INVOKED_TRANSACTION_ID, createdTransactionIdAfterMoneyTransfer);
     }
 
     @Test

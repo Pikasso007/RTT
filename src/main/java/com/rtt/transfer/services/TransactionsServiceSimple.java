@@ -1,8 +1,8 @@
-package com.rtt.transfer.services.services;
+package com.rtt.transfer.services;
 
-import com.rtt.transfer.services.ServicesManager;
-import com.rtt.transfer.services.model.Account;
-import com.rtt.transfer.services.model.Transaction;
+import com.rtt.transfer.ServicesManager;
+import com.rtt.transfer.model.Account;
+import com.rtt.transfer.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,10 +111,10 @@ public class TransactionsServiceSimple implements TransactionsService {
                 if (entityManager.getTransaction().isActive()) {
                     entityManager.getTransaction().rollback();
                 }
-                LOG.error("Transaction with number '" + transaction.getId() + "' has been rollbacked!");
+                LOG.error("Transaction with accountIdFrom '" + accountIdFrom + "' and accountIdTo '" + accountIdTo + "' has been rollback!");
             }
 
-            return transaction.getId().toString();
+            return transaction != null ? transaction.getId().toString() : NOT_INVOKED_TRANSACTION_ID;
         } finally {
             entityManager.close();
             firstLock.unlock();
@@ -148,10 +148,10 @@ public class TransactionsServiceSimple implements TransactionsService {
                 if (entityManager.getTransaction().isActive()) {
                     entityManager.getTransaction().rollback();
                 }
-                LOG.error("Transaction with number '" + transaction.getId() + "' has been rollback!");
+                LOG.error("Transaction with accountIdFrom '" + accountIdFrom + "' and accountIdTo '" + accountIdTo + "' has been rollback!");
             }
 
-            return transaction.getId().toString();
+            return transaction != null ? transaction.getId().toString() : NOT_INVOKED_TRANSACTION_ID;
         } finally {
             entityManager.close();
             lock.unlock();

@@ -1,6 +1,8 @@
 package com.rtt.transfer.services;
 
-import com.rtt.transfer.services.model.Account;
+import com.rtt.transfer.ServicesManager;
+import com.rtt.transfer.TransferBootstrap;
+import com.rtt.transfer.model.Account;
 import org.glassfish.jersey.internal.util.collection.MultivaluedStringMap;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

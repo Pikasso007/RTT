@@ -1,4 +1,4 @@
-package com.rtt.transfer.services.model;
+package com.rtt.transfer.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 

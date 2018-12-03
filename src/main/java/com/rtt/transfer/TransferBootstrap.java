@@ -1,6 +1,6 @@
-package com.rtt.transfer.services;
+package com.rtt.transfer;
 
-import com.rtt.transfer.services.configuration.RestResourcesConfig;
+import com.rtt.transfer.configuration.RestResourcesConfig;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;

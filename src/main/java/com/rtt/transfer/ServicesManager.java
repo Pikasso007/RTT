@@ -1,9 +1,9 @@
-package com.rtt.transfer.services;
+package com.rtt.transfer;
 
-import com.rtt.transfer.services.services.AccountsService;
-import com.rtt.transfer.services.services.AccountsServiceSimple;
-import com.rtt.transfer.services.services.TransactionsService;
-import com.rtt.transfer.services.services.TransactionsServiceSimple;
+import com.rtt.transfer.services.AccountsService;
+import com.rtt.transfer.services.AccountsServiceSimple;
+import com.rtt.transfer.services.TransactionsService;
+import com.rtt.transfer.services.TransactionsServiceSimple;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

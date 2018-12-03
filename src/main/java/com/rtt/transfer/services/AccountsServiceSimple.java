@@ -1,8 +1,8 @@
-package com.rtt.transfer.services.services;
+package com.rtt.transfer.services;
 
-import com.rtt.transfer.services.ServicesManager;
-import com.rtt.transfer.services.model.Account;
-import com.rtt.transfer.services.model.Transaction;
+import com.rtt.transfer.ServicesManager;
+import com.rtt.transfer.model.Account;
+import com.rtt.transfer.model.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

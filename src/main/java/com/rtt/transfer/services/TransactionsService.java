@@ -1,6 +1,6 @@
-package com.rtt.transfer.services.services;
+package com.rtt.transfer.services;
 
-import com.rtt.transfer.services.model.Transaction;
+import com.rtt.transfer.model.Transaction;
 
 import java.math.BigDecimal;
 

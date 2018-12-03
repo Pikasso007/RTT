@@ -1,7 +1,6 @@
 package com.rtt.transfer;
 
-import com.rtt.transfer.services.ServicesManager;
-import com.rtt.transfer.services.model.Account;
+import com.rtt.transfer.model.Account;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -10,8 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.rtt.transfer.services.ServicesManager.getAccountsService;
-import static com.rtt.transfer.services.ServicesManager.getTransactionsService;
+import static com.rtt.transfer.ServicesManager.getAccountsService;
+import static com.rtt.transfer.ServicesManager.getTransactionsService;
 import static org.junit.Assert.assertEquals;
 
 public class StressTest {
