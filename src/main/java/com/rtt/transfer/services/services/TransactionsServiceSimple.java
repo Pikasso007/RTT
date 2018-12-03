@@ -11,6 +11,7 @@ import java.util.Objects;
 
 public class TransactionsServiceSimple implements TransactionsService {
 
+    @Override
     public String transfer(String accountIdFrom, String accountIdTo, BigDecimal amount, String comment)  {
         if (Objects.equals(accountIdFrom, accountIdTo)) {
             return "AccountIds can't be the same!";

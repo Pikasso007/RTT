@@ -2,10 +2,12 @@ package com.rtt.transfer.services.services;
 
 import com.rtt.transfer.services.ServicesManager;
 import com.rtt.transfer.services.model.Account;
+import com.rtt.transfer.services.model.Transaction;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Path("/accounts-service")
 @Produces(MediaType.APPLICATION_JSON)
@@ -21,7 +23,19 @@ public class AccountsRestService {
 
     @GET
     @Path("/fetch")
-    public Account fetchAccountInformation(@QueryParam("id") String accountId) {
+    public Account fetchAccountInformation(@QueryParam("accountId") String accountId) {
         return accountsService.getAccount(accountId);
+    }
+
+    @GET
+    @Path("/transactions-by-account")
+    public List<Transaction> getTransactionsByAccountId(@QueryParam("accountId") String accountId) {
+        return accountsService.getTransactionsByAccountId(accountId);
+    }
+
+    @GET
+    @Path("/exist")
+    public boolean isExistAccount(@QueryParam("accountId") String accountId) {
+        return accountsService.isExistAccount(accountId);
     }
 }

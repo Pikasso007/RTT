@@ -2,8 +2,8 @@ package com.rtt.transfer.services;
 
 import com.rtt.transfer.services.model.Account;
 import org.glassfish.jersey.internal.util.collection.MultivaluedStringMap;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -15,18 +15,20 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class AccountsServiceTest {
 
     private static final String TEST_PERSISTENCE_UNIT_NAME = "rtt-test";
     private static final String HTTP_LOCALHOST_ADDRESS = "http://localhost:";
 
-    private WebTarget webTarget;
+    private static WebTarget webTarget;
 
 
-    @Before
-    public void startServer() throws Exception {
+    @BeforeClass
+    public static void startServer() throws Exception {
         ServicesManager.initServices(TEST_PERSISTENCE_UNIT_NAME);
         TransferBootstrap.startEmbeddedServer();
 
@@ -34,13 +36,13 @@ public class AccountsServiceTest {
         webTarget = client.target(HTTP_LOCALHOST_ADDRESS + TransferBootstrap.TOMCAT_PORT);
     }
 
-    @After
-    public void stopServer() throws Exception {
+    @AfterClass
+    public static void stopServer() throws Exception {
         TransferBootstrap.stopEmbeddedServer();
     }
 
     @Test
-    public void createAndGetAccountRestServiceTest() {
+    public void createAndFetchMethodsTest() {
         MultivaluedMap<String, String> requestParams = new MultivaluedStringMap();
         requestParams.add("amount", "100.25");
 
@@ -54,7 +56,7 @@ public class AccountsServiceTest {
         Account fetchedAccount = webTarget.path("rest")
                 .path("accounts-service")
                 .path("fetch")
-                .queryParam("id", createdAccountId)
+                .queryParam("accountId", createdAccountId)
                 .request()
                 .get()
                 .readEntity(Account.class);
@@ -64,15 +66,63 @@ public class AccountsServiceTest {
     }
 
     @Test
-    public void whenFetchNotExistedAccount_ThenReturn204Status() {
-        Response response = webTarget.path("rest")
+    public void fetchMethodTest_WhenTryToFetchNotExistedAccount_ThenReturnStatus204() {
+        Response responseAfterQueryWhereAccountIsNumber = webTarget.path("rest")
                 .path("accounts-service")
                 .path("fetch")
-                .queryParam("id", "999")
+                .queryParam("accountId", "999")
                 .request()
                 .get();
 
-        assertEquals(204, response.getStatus());
+        Response responseAfterQueryWhereAccountIsText = webTarget.path("rest")
+                .path("accounts-service")
+                .path("fetch")
+                .queryParam("accountId", "abc")
+                .request()
+                .get();
+
+        assertEquals(204, responseAfterQueryWhereAccountIsNumber.getStatus());
+        assertEquals(204, responseAfterQueryWhereAccountIsText.getStatus());
     }
 
+    @Test
+    public void existMethodTest() {
+        MultivaluedMap<String, String> requestParams = new MultivaluedStringMap();
+        requestParams.add("amount", "100.25");
+
+        String createdAccountId = webTarget.path("rest")
+                .path("accounts-service")
+                .path("create")
+                .request()
+                .post(Entity.form(requestParams))
+                .readEntity(String.class);
+
+        Boolean existedAccount = webTarget.path("rest")
+                .path("accounts-service")
+                .path("exist")
+                .queryParam("accountId", createdAccountId)
+                .request()
+                .get()
+                .readEntity(Boolean.class);
+
+        Boolean isExistAccountInTextFormat = webTarget.path("rest")
+                .path("accounts-service")
+                .path("exist")
+                .queryParam("accountId", "abc")
+                .request()
+                .get()
+                .readEntity(Boolean.class);
+
+        Boolean isExistAccount = webTarget.path("rest")
+                .path("accounts-service")
+                .path("exist")
+                .queryParam("accountId", "9999")
+                .request()
+                .get()
+                .readEntity(Boolean.class);
+
+        assertTrue(existedAccount);
+        assertFalse(isExistAccountInTextFormat);
+        assertFalse(isExistAccount);
+    }
 }
