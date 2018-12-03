@@ -11,15 +11,15 @@ import javax.persistence.Persistence;
 
 public class ServicesManager {
 
-    private static TransactionsService transactionsService;
     private static AccountsService accountsService;
+    private static TransactionsService transactionsService;
 
     private static EntityManagerFactory entityManagerFactory;
 
 
-    static void initServices(String persistenceUnitName) {
-        transactionsService = new TransactionsServiceSimple();
+    public static void initServices(String persistenceUnitName) {
         accountsService = new AccountsServiceSimple();
+        transactionsService = new TransactionsServiceSimple(accountsService);
 
         entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName);
     }
