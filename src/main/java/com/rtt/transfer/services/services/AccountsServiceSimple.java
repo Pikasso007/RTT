@@ -21,6 +21,7 @@ public class AccountsServiceSimple implements AccountsService {
 
     @Override
     public String createAccountAndGetId(BigDecimal amount) {
+        LOG.info("Account creation is started");
         Account account = new Account(amount);
 
         EntityManager entityManager = ServicesManager.createEntityManager();
@@ -31,11 +32,14 @@ public class AccountsServiceSimple implements AccountsService {
         entityManager.getTransaction().commit();
         entityManager.close();
 
+        LOG.info("Account with id '{}' is successfully created.", account.getId());
         return account.getId().toString();
     }
 
     @Override
     public Account getAccount(String accountId) {
+        LOG.info("Fetching account with id '{}'", accountId);
+
         EntityManager entityManager = ServicesManager.createEntityManager();
 
         Account account = null;
@@ -52,6 +56,8 @@ public class AccountsServiceSimple implements AccountsService {
 
     @Override
     public List<Transaction> getTransactionsByAccountId(String accountId) {
+        LOG.info("Fetching all transactions with account id '{}'", accountId);
+
         EntityManager entityManager = ServicesManager.createEntityManager();
         Query query = entityManager.createQuery(SELECT_TRANSACTIONS_BY_ACCOUNT_ID);
         query.setParameter(ACCOUNT_ID_FROM_PARAM, accountId);
@@ -65,6 +71,8 @@ public class AccountsServiceSimple implements AccountsService {
 
     @Override
     public boolean isExistAccount(String accountId) {
+        LOG.info("Checking account existence with the next id '{}'", accountId);
+
         EntityManager entityManager = ServicesManager.createEntityManager();
         boolean result = false;
         try {
