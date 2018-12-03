@@ -44,8 +44,8 @@ public class TransactionsServiceTest {
     @Test
     public void depositAndWithdrawAndTransferMoneyWithNotExistedAccountsTest() {
         MultivaluedMap<String, String> requestParams = new MultivaluedStringMap();
-        requestParams.add("accountIdFrom", "1");
-        requestParams.add("accountIdTo", "2");
+        requestParams.add("accountIdFrom", "1_not_exist");
+        requestParams.add("accountIdTo", "-3");
         requestParams.add("amount", "100.25");
         requestParams.add("comment", "no comment");
 

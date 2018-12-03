@@ -46,6 +46,7 @@ public class TransferBootstrap {
     public static void stopEmbeddedServer() throws LifecycleException {
         LOG.info("Stopping embedded server");
         tomcat.stop();
+        tomcat.destroy();
     }
 
     private static ServletContainer resourceConfig() {
