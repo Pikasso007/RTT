@@ -16,6 +16,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -127,4 +128,79 @@ public class AccountsServiceTest {
         assertFalse(isExistAccountInTextFormat);
         assertFalse(isExistAccount);
     }
+
+    @Test
+    public void transactionsByAccountIdSearchTest() {
+        MultivaluedMap<String, String> accountRequestParams = new MultivaluedStringMap();
+        accountRequestParams.add("amount", "100.25");
+
+        String firstCreatedAccountId = webTarget.path("rest")
+                .path("accounts-service")
+                .path("create")
+                .request()
+                .post(Entity.form(accountRequestParams))
+                .readEntity(String.class);
+
+        String secondCreatedAccountId = webTarget.path("rest")
+                .path("accounts-service")
+                .path("create")
+                .request()
+                .post(Entity.form(accountRequestParams))
+                .readEntity(String.class);
+
+        MultivaluedMap<String, String> transactionRequestParams = new MultivaluedStringMap();
+        transactionRequestParams.add("accountIdFrom", firstCreatedAccountId);
+        transactionRequestParams.add("accountIdTo", secondCreatedAccountId);
+        transactionRequestParams.add("amount", "45.25");
+        transactionRequestParams.add("comment", "no comment");
+
+        String createdTransactionIdAfterTransferMoney = webTarget.path("rest")
+                .path("transactions-service")
+                .path("transfer-money")
+                .request()
+                .post(Entity.form(transactionRequestParams))
+                .readEntity(String.class);
+
+        MultivaluedMap<String, String> transactionRequestParams2 = new MultivaluedStringMap();
+        transactionRequestParams2.add("accountIdFrom", "999");
+        transactionRequestParams2.add("accountIdTo", secondCreatedAccountId);
+        transactionRequestParams2.add("amount", "45.25");
+        transactionRequestParams2.add("comment", "no comment");
+
+        String createdSecondTransactionIdAfterTransferMoney = webTarget.path("rest")
+                .path("transactions-service")
+                .path("transfer-money")
+                .request()
+                .post(Entity.form(transactionRequestParams2))
+                .readEntity(String.class);
+
+        List transactionsListForSecondAccount = webTarget.path("rest")
+                .path("accounts-service")
+                .path("transactions-by-account")
+                .queryParam("accountId", secondCreatedAccountId)
+                .request()
+                .get()
+                .readEntity(List.class);
+
+        List transactionsListForFirstAccount = webTarget.path("rest")
+                .path("accounts-service")
+                .path("transactions-by-account")
+                .queryParam("accountId", firstCreatedAccountId)
+                .request()
+                .get()
+                .readEntity(List.class);
+
+        List transactionsListForNotExistedAccount = webTarget.path("rest")
+                .path("accounts-service")
+                .path("transactions-by-account")
+                .queryParam("accountId", "999")
+                .request()
+                .get()
+                .readEntity(List.class);
+
+        assertEquals(0, transactionsListForNotExistedAccount.size());
+        assertEquals(1, transactionsListForFirstAccount.size());
+        assertEquals(2, transactionsListForSecondAccount.size());
+    }
+
 }

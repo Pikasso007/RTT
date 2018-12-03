@@ -59,12 +59,12 @@ public class TransactionsServiceSimple implements TransactionsService {
         boolean isExistAccountIdFrom = accountsService.isExistAccount(accountIdFrom);
         boolean isExistAccountIdTo = accountsService.isExistAccount(accountIdTo);
 
-        if (isExistAccountIdFrom && accountIdTo == null) {
+        if (isExistAccountIdFrom && (accountIdTo == null || !isExistAccountIdTo)) {
             LOG.info("Withdraw money from accountId '{}'", accountIdFrom);
-            resultTransactionId = withdrawOrDepositMoney(accountIdFrom, accountIdTo, amount, comment);
-        } else if (isExistAccountIdTo && accountIdFrom == null) {
+            resultTransactionId = withdrawOrDepositMoney(accountIdFrom, null, amount, comment);
+        } else if (isExistAccountIdTo && (accountIdFrom == null || !isExistAccountIdFrom)) {
             LOG.info("Deposit money to accountId '{}'", accountIdTo);
-            resultTransactionId = withdrawOrDepositMoney(accountIdFrom, accountIdTo, amount, comment);
+            resultTransactionId = withdrawOrDepositMoney(null, accountIdTo, amount, comment);
         } else if (isExistAccountIdFrom && isExistAccountIdTo) {
             LOG.info("Transfer money from accountId '{}' to accountId '{}'", accountIdFrom, accountIdTo);
             resultTransactionId = transferMoney(accountIdFrom, accountIdTo, amount, comment);
